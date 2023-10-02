@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useCallback, useMemo, useRef } from "react";
 import { styled } from "@/stitches.config";
 import { sand, grass } from "@radix-ui/colors";

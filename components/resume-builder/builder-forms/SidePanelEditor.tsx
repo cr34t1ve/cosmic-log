@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { sand, grass } from "@radix-ui/colors";
-import { useResumeBuilder } from "store/ResumeBuilderContext";
+import { useResumeBuilder } from "@/store/ResumeBuilderContext";
 import { TextInput } from "@/components/forms";
 import { transformLabel } from "@/lib/helpers";
 import { PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
@@ -136,8 +136,8 @@ export const SidePanelEditor = () => {
       {education.map((education: any, index: number) => {
         const educationKeys = Object.keys(education);
         return (
-          <div className="row">
-            <div className="education-grid" key={index}>
+          <div className="row" key={index}>
+            <div className="education-grid">
               {educationKeys?.map((key: string, index: number) => (
                 <div className="skill mb-1 row" key={index}>
                   <div className="education">

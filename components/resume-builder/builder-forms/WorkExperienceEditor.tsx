@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { sand, grass } from "@radix-ui/colors";
 import { PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
-import { useResumeBuilder } from "store/ResumeBuilderContext";
+import { useResumeBuilder } from "@/store/ResumeBuilderContext";
 import { TextInput } from "@/components/forms";
 
 const defaultRole = {

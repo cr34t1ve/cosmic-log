@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { sand, grass } from "@radix-ui/colors";
-import { useResumeBuilder } from "store/ResumeBuilderContext";
+import { useResumeBuilder } from "@/store/ResumeBuilderContext";
 import { TextInput } from "@/components/forms";
 import { transformLabel } from "@/lib/helpers";
 

@@ -80,7 +80,7 @@ export const BlockEditorDialog: FC<BlockEditorDialogProps> = ({
                   " drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06))",
               }}
             >
-              {editors?.[selectedBlock?.type as BLOCK_TYPE]}
+              <>{editors?.[selectedBlock?.type as BLOCK_TYPE]}</>
             </Dialog.Panel>
           </div>
         </div>

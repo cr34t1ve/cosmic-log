@@ -1,4 +1,4 @@
-import { useResumeBuilder } from "store/ResumeBuilderContext";
+import { useResumeBuilder } from "@/store/ResumeBuilderContext";
 import { TextInput } from "@/components/forms";
 import styled from "styled-components";
 import { sand } from "@radix-ui/colors";

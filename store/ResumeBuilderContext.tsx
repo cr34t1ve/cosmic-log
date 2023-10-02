@@ -164,7 +164,11 @@ const ResumeBuilderContext = createContext<ResumeBuilderContextProps>({
   selectBlockCopy: () => {},
 });
 
-export const ResumeBuilderProvider: FC = ({ children }) => {
+export const ResumeBuilderProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [blocks, setBlocks] = useState<Block[] | []>([
     headerBlockSample,
     workExperience,
@@ -202,7 +206,7 @@ export const ResumeBuilderProvider: FC = ({ children }) => {
   }, [selectedBlock]);
 
   const editHeaderField = useCallback(
-    (props) => {
+    (props: any) => {
       const updatedBlock = {
         ...headerBlock,
         content: props,
@@ -220,7 +224,7 @@ export const ResumeBuilderProvider: FC = ({ children }) => {
   );
 
   const updateWorkBlock = useCallback(
-    (props) => {
+    (props: any) => {
       const updatedBlocks = [
         ...blocks.filter((block) => block.id !== props.id),
         props,
@@ -233,7 +237,7 @@ export const ResumeBuilderProvider: FC = ({ children }) => {
   );
 
   const updateAwardBlock = useCallback(
-    (props) => {
+    (props: any) => {
       const updatedBlocks = [
         ...blocks.filter((block) => block.id !== props.id),
         props,
@@ -246,7 +250,7 @@ export const ResumeBuilderProvider: FC = ({ children }) => {
   );
 
   const updateEducationBlock = useCallback(
-    (props) => {
+    (props: any) => {
       const updatedBlocks = [
         ...blocks.filter((block) => block.id !== props.id),
         props,
@@ -259,7 +263,7 @@ export const ResumeBuilderProvider: FC = ({ children }) => {
   );
 
   const updateSidePanelBlock = useCallback(
-    (props) => {
+    (props: any) => {
       const updatedBlocks = [
         ...blocks.filter((block) => block.id !== props.id),
         props,
