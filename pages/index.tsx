@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useCallback, useMemo, useRef } from "react";
 import { styled } from "@/stitches.config";
 import { sand, grass } from "@radix-ui/colors";
@@ -6,13 +5,15 @@ import { useReactToPrint } from "react-to-print";
 import { format } from "date-fns";
 
 import {
+  BLOCK_TYPE,
+  Block,
   ResumeBuilderProvider,
   useResumeBuilder,
 } from "@/store/ResumeBuilderContext";
 import { BlockEditorDialog } from "../components";
 import Head from "next/head";
 
-function getValueFromBlock(block, name) {
+function getValueFromBlock(block: any, name: any) {
   return block?.content[name]?.formValue || "";
 }
 
@@ -23,7 +24,7 @@ function formatDate(dateString: string) {
 const generateBlankExperience = () => {
   return {
     id: `work-${String(new Date().getTime() / 1000)}`,
-    type: "work-experience",
+    type: "work-experience" as BLOCK_TYPE,
     content: {
       companyName: "",
       roles: [
@@ -42,7 +43,7 @@ const generateBlankExperience = () => {
 const generateBlankAward = () => {
   return {
     id: `award-${String(new Date().getTime() / 1000)}`,
-    type: "award",
+    type: "award" as BLOCK_TYPE,
     content: {
       title: "",
       companyName: "",
@@ -55,7 +56,7 @@ const generateBlankAward = () => {
 const generateBlankEducation = () => {
   return {
     id: `education-${String(new Date().getTime() / 1000)}`,
-    type: "education",
+    type: "education" as BLOCK_TYPE,
     content: {
       schoolName: "",
       startDate: "2023-01-01",
@@ -75,7 +76,13 @@ const ResumeContainer = () => {
   );
 };
 
-const Header = ({ headerBlock, selectBlock }) => {
+const Header = ({
+  headerBlock,
+  selectBlock,
+}: {
+  headerBlock: any;
+  selectBlock: any;
+}) => {
   return (
     <HeaderWrapper
       className="block"
@@ -101,7 +108,13 @@ const Header = ({ headerBlock, selectBlock }) => {
   );
 };
 
-const SidePanel = ({ sidePanelBlock, selectBlock }) => {
+const SidePanel = ({
+  sidePanelBlock,
+  selectBlock,
+}: {
+  sidePanelBlock: any;
+  selectBlock: any;
+}) => {
   return (
     <section
       className="side-panel block"
@@ -229,7 +242,7 @@ const ResumeV2 = () => {
                       <h3 className="block-title">{workBlock.companyName}</h3>
                       <Divider short margin={8} />
                       <div className="roles">
-                        {workBlock.roles.map((role, index) => {
+                        {workBlock.roles.map((role: any, index: number) => {
                           return (
                             <div className="role" key={`${role}-${index}`}>
                               <p className="block-subtitle">{role.title}</p>
@@ -243,16 +256,18 @@ const ResumeV2 = () => {
                       </div>
                     </div>
                     <div className="highlights">
-                      {workBlock.highlights.map((highlight) => {
-                        return (
-                          <p
-                            className="highlight"
-                            key={`${Math.random()}-${new Date().valueOf()}`}
-                          >
-                            {highlight}
-                          </p>
-                        );
-                      })}
+                      {workBlock.highlights.map(
+                        (highlight: any, index: number) => {
+                          return (
+                            <p
+                              className="highlight"
+                              key={`${Math.random()}-${new Date().valueOf()}`}
+                            >
+                              {highlight}
+                            </p>
+                          );
+                        }
+                      )}
                     </div>
                   </div>
                 );
@@ -292,7 +307,7 @@ const ResumeV2 = () => {
                 className="resume-button medium mr-2"
                 onClick={() => selectBlockCopy(generateBlankExperience())}
               >
-                Add new experince
+                Add new experience
               </button>
               <button
                 className="resume-button medium mr-2"

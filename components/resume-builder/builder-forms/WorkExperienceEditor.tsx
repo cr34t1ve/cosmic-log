@@ -14,7 +14,7 @@ const defaultRole = {
 export const WorkExperienceEditor = () => {
   const { selectedBlock, updateWorkBlock } = useResumeBuilder();
 
-  const [roles, setRoles] = useState(selectedBlock?.content.roles);
+  const [roles, setRoles] = useState(selectedBlock?.content.roles || []);
 
   const [highlights, setHighlights] = useState(
     selectedBlock?.content?.highlights

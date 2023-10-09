@@ -5,6 +5,7 @@ import {
   useContext,
   useMemo,
   useCallback,
+  useEffect,
 } from "react";
 
 export type BLOCK_TYPE =
@@ -14,11 +15,11 @@ export type BLOCK_TYPE =
   | "education"
   | "side-panel";
 
-type Block = {
+export interface Block {
   id: string;
   type: BLOCK_TYPE;
   content: any; // define later
-};
+}
 
 interface AwardContentBlockI {
   title: string;
@@ -178,6 +179,10 @@ export const ResumeBuilderProvider = ({
   ]);
 
   const [selectedBlock, setSelectBlock] = useState<Block | null>(null);
+
+  useEffect(() => {
+    console.log(selectedBlock);
+  }, [selectedBlock]);
 
   const selectBlock = useCallback(
     (blockId: string) => {

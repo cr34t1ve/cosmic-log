@@ -11,7 +11,9 @@ import { AwardHistoryEditor } from "./builder-forms/AwardHistoryEditor";
 import { EducationHistoryEditor } from "./builder-forms/EducationHistoryBlock";
 import { SidePanelEditor } from "./builder-forms/SidePanelEditor";
 
-const editors: Record<BLOCK_TYPE, React.FC> = {
+// TODO: Should be: Record<BLOCK_TYPE, React.FC>
+
+const editors: Record<BLOCK_TYPE, any> = {
   header: HeaderBlockEditor,
   "work-experience": WorkExperienceEditor,
   award: AwardHistoryEditor,
@@ -21,7 +23,7 @@ const editors: Record<BLOCK_TYPE, React.FC> = {
 
 interface BlockEditorDialogProps {
   show: boolean;
-  closeModal: () => {};
+  closeModal: () => void;
 }
 
 export const BlockEditorDialog: FC<BlockEditorDialogProps> = ({
@@ -80,7 +82,7 @@ export const BlockEditorDialog: FC<BlockEditorDialogProps> = ({
                   " drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06))",
               }}
             >
-              <>{editors?.[selectedBlock?.type as BLOCK_TYPE]}</>
+              {editors?.[selectedBlock?.type as BLOCK_TYPE]}
             </Dialog.Panel>
           </div>
         </div>
