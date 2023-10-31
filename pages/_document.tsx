@@ -1,5 +1,6 @@
 import { Html, Head, Main, NextScript } from "next/document";
 import { getCssText } from "@/stitches.config";
+import { inter } from "@/fonts/fonts";
 
 export default function Document() {
   return (
@@ -10,7 +11,7 @@ export default function Document() {
           dangerouslySetInnerHTML={{ __html: getCssText() }}
         />
       </Head>
-      <body>
+      <body className={inter.className}>
         <Main />
         <NextScript />
       </body>

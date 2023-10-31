@@ -21,6 +21,11 @@
     "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
   --silver: hsla(216, 2%, 48%, 1);
+  --accent: #319795;
+  --primary-text: #2d3748;
+  --secondary-text: #575f6d;
+  --tertiary-text: #718096;
+  --divider: #cbd5e0;
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -38,38 +43,47 @@ body {
   overflow-x: hidden;
 }
 
-body {
+h1 {
+  /* 36px in rem */
+  font-size: 2.25rem;
+}
+
+h2 {
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--secondary-text);
 }
 
 h1,
 h3 {
-  font-size: 2.5rem;
   font-weight: 700;
-  font-family: "CabinetGrotesk";
+  color: var(--primary-text);
 }
 
 h4 {
   /* font-size: 1.5rem; */
-  font-weight: 700;
-  font-family: "BerkeleyMono";
+  font-weight: 600;
+  color: var(--primary-text);
+}
+
+hr {
+  background-color: var(--divider);
+  color: var(--divider);
 }
 
 .block-title {
   font-size: 1rem;
   font-weight: 700;
-  font-family: "BerkeleyMono";
 }
 
 .block-subtitle {
   font-size: 0.75rem;
   font-weight: 700;
-  font-family: "BerkeleyMono";
 }
 
 .block-date {
   font-size: 0.75rem;
   font-weight: 700;
-  font-family: "CabinetGrotesk";
   color: var(--silver);
 }
 
@@ -105,12 +119,20 @@ a {
   }
 }
 
+.header-item {
+  font-size: 0.85rem;
+}
+
 @media print {
   .layout {
     min-height: unset;
     width: 595px;
     margin-inline: auto;
     margin-top: 48px;
+  }
+
+  .header-item {
+    font-size: 6px;
   }
 
   h1 {
@@ -152,9 +174,4 @@ a {
 
 button {
   all: unset;
-  display: inline-block;
-  cursor: pointer;
-  border-radius: 100px;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--silver);
 }

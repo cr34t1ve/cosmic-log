@@ -117,16 +117,21 @@ const headerBlockSample: Block = {
   content: {
     name: {
       formType: "string",
-      formValue: "Jon Dang",
+      formValue: "Desmond Sofua",
+    },
+
+    website: {
+      formType: "string",
+      formValue: "sofua.co.uk",
     },
 
     phone: {
       formType: "string",
-      formValue: "571.225.5960",
+      formValue: "+233.55.711.3242",
     },
     email: {
       formType: "string",
-      formValue: "jondang@gmail.com",
+      formValue: "desmond@sofua.co.uk",
     },
 
     location: {

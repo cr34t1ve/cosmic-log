@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { sand, grass } from "@radix-ui/colors";
-import { PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
+import { styled } from "@/stitches.config";
+import { Cross2Icon } from "@radix-ui/react-icons";
 import { useResumeBuilder } from "@/store/ResumeBuilderContext";
-import { TextInput } from "@/components/forms";
+import { Button, InputWrapper, Label, TextInput } from "@/components/forms";
+import { Flex } from "@/components";
 
 const defaultRole = {
   title: "",
@@ -11,7 +11,7 @@ const defaultRole = {
   endDate: "",
 };
 
-export const WorkExperienceEditor = () => {
+export function WorkExperienceEditor() {
   const { selectedBlock, updateWorkBlock } = useResumeBuilder();
 
   const [roles, setRoles] = useState(selectedBlock?.content.roles || []);
@@ -74,213 +74,133 @@ export const WorkExperienceEditor = () => {
 
   return (
     <WorkExperienceEditorContainer>
-      <h4>Work Experience</h4>
-
-      <TextInput
-        value={companyName}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setCompanyName(e.target.value)
-        }
-        label="Company Name"
-        placeholder="Sunday Studio"
-      />
-
-      <div className="roles">
-        <div className="header">
-          <p>
-            Roles (<span>{roles.length}</span>)
-          </p>
-          <PlusCircledIcon
-            width={24}
-            height={24}
-            color={sand.sand12}
-            onClick={() => {
-              setRoles([...roles, defaultRole]);
-            }}
-          />
-        </div>
+      <InputWrapper>
+        <TextInput
+          value={companyName}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setCompanyName(e.target.value)
+          }
+          label="Company Info"
+          placeholder="Sunday Studio"
+        />
+      </InputWrapper>
+      <div style={{ marginTop: 30 }}>
+        <Label>
+          Roles (<span>{roles.length}</span>)
+        </Label>
 
         {roles.map((role: any, index: number) => {
           return (
-            <div className="role" key={index}>
-              <div className="title">
-                <TextInput
-                  value={role.title}
-                  label="Title"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    onRoleValueChange(e, index)
-                  }
-                  name="title"
-                />
-              </div>
+            <Flex css={{ marginTop: 10 }} key={index}>
+              <Flex align="center">
+                <InputWrapper>
+                  <Flex
+                    css={{
+                      display: "grid",
+                      gap: 10,
+                      gridTemplateColumns: "1fr 1fr",
+                    }}
+                  >
+                    <TextInput
+                      value={role.title}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        onRoleValueChange(e, index)
+                      }
+                      name="title"
+                    />
 
-              <div className="tenure">
-                <TextInput
-                  label="Start"
-                  type="date"
-                  name="startDate"
-                  value={role.startDate}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    onRoleValueChange(e, index)
-                  }
-                />
-                <TextInput
-                  label="End"
-                  type="date"
-                  name="endDate"
-                  value={role.endDate}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    onRoleValueChange(e, index)
-                  }
-                />
-              </div>
-
-              <div className="delete" onClick={() => removeRole(index)}>
-                <TrashIcon width={28} height={28} color={sand.sand12} />
-              </div>
-            </div>
+                    <TextInput
+                      type="date"
+                      name="startDate"
+                      value={role.startDate}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        onRoleValueChange(e, index)
+                      }
+                    />
+                  </Flex>
+                </InputWrapper>
+                <Flex
+                  align="center"
+                  css={{
+                    marginLeft: 10,
+                    backgroundColor: "#CBD5E0",
+                    borderRadius: "$round",
+                    padding: 3,
+                    cursor: "pointer",
+                  }}
+                  className="delete"
+                  onClick={() => removeRole(index)}
+                >
+                  <Cross2Icon width={15} height={15} color="white" />
+                </Flex>
+              </Flex>
+            </Flex>
           );
         })}
       </div>
+      <Button
+        variant="secondary"
+        css={{ marginTop: 10 }}
+        onClick={() => {
+          setRoles([...roles, defaultRole]);
+        }}
+      >
+        Add Role
+      </Button>
 
       <div className="highlights">
-        <div className="header">
-          <p>
-            Highlights (<span>{roles.length}</span>)
-          </p>
-          <PlusCircledIcon
-            width={24}
-            height={24}
-            color={sand.sand12}
-            onClick={() => {
-              setHighlights([...highlights, ""]);
-            }}
-          />
+        <div style={{ marginTop: 30 }}>
+          <Label>
+            Highlights (<span>{highlights.length}</span>)
+          </Label>
         </div>
 
-        {highlights.map((highlight: string, index: number) => {
+        {highlights?.map((highlight: string, index: number) => {
           return (
-            <div className="highlight" key={index}>
-              <TextInput
-                name="highlight"
-                value={highlight}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  onHighlightChange(e, index)
-                }
-              />
-              <div className="delete" onClick={() => removeHighlight(index)}>
-                <TrashIcon width={28} height={28} color={sand.sand12} />
-              </div>
-            </div>
+            <Flex align="center" css={{ marginTop: 10 }} key={index}>
+              <InputWrapper>
+                <TextInput
+                  name="highlight"
+                  value={highlight}
+                  placeholder="What did you do at this compny?"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    onHighlightChange(e, index)
+                  }
+                />
+              </InputWrapper>
+              <Flex
+                align="center"
+                css={{
+                  marginLeft: 10,
+                  backgroundColor: "#CBD5E0",
+                  borderRadius: "$round",
+                  padding: 3,
+                  cursor: "pointer",
+                }}
+                className="delete"
+                onClick={() => removeHighlight(index)}
+              >
+                <Cross2Icon width={15} height={15} color="white" />
+              </Flex>
+            </Flex>
           );
         })}
       </div>
+      <Button
+        variant="secondary"
+        css={{ marginTop: 10 }}
+        onClick={() => {
+          setHighlights([...highlights, ""]);
+        }}
+      >
+        Add highlight
+      </Button>
 
-      <button className="resume-button medium" onClick={saveBlock}>
-        Save
-      </button>
+      <Button css={{ marginTop: 50 }} onClick={saveBlock}>
+        Save section
+      </Button>
     </WorkExperienceEditorContainer>
   );
-};
+}
 
-const WorkExperienceEditorContainer = styled.div`
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  h4 {
-    color: ${sand.sand12};
-    margin-top: 0;
-  }
-
-  .header {
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    &:hover {
-      svg {
-        path {
-          fill: ${grass.grass8};
-        }
-      }
-    }
-
-    p {
-      font-size: 15px;
-      color: ${sand.sand12};
-      display: flex;
-
-      span {
-        color: ${grass.grass11};
-        padding: 0 2px;
-      }
-    }
-  }
-
-  .roles {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    .role {
-      gap: 10px;
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      align-items: flex-end;
-
-      .title {
-        grid-column: span 4;
-      }
-
-      .tenure {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        grid-column: span 5;
-
-        .textinput-container {
-          width: 150px;
-        }
-      }
-
-      .delete {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        grid-template-columns: span 1;
-        cursor: pointer;
-        margin-bottom: 5px;
-
-        &:hover {
-          svg {
-            path {
-              fill: ${grass.grass8};
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .highlights {
-    margin-top: 20px;
-    .highlight {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      gap: 10px;
-    }
-  }
-
-  button {
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  * {
-    /* outline: 1px dotted red; */
-  }
-`;
+const WorkExperienceEditorContainer = styled("div", {});

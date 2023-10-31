@@ -5,13 +5,12 @@ import { useReactToPrint } from "react-to-print";
 import { format } from "date-fns";
 
 import {
-  BLOCK_TYPE,
-  Block,
   ResumeBuilderProvider,
   useResumeBuilder,
 } from "@/store/ResumeBuilderContext";
 import { BlockEditorDialog } from "../components";
 import Head from "next/head";
+import { generateBlankExperience } from "@/lib/helpers";
 
 function getValueFromBlock(block: any, name: any) {
   return block?.content[name]?.formValue || "";
@@ -21,141 +20,11 @@ function formatDate(dateString: string) {
   return format(new Date(dateString), "LLL y");
 }
 
-const generateBlankExperience = () => {
-  return {
-    id: `work-${String(new Date().getTime() / 1000)}`,
-    type: "work-experience" as BLOCK_TYPE,
-    content: {
-      companyName: "",
-      roles: [
-        {
-          title: "",
-          startDate: "",
-          endDate: "",
-        },
-      ],
-
-      highlights: [""],
-    },
-  };
-};
-
-const generateBlankAward = () => {
-  return {
-    id: `award-${String(new Date().getTime() / 1000)}`,
-    type: "award" as BLOCK_TYPE,
-    content: {
-      title: "",
-      companyName: "",
-      date: "2023-01-01",
-      description: "",
-    },
-  };
-};
-
-const generateBlankEducation = () => {
-  return {
-    id: `education-${String(new Date().getTime() / 1000)}`,
-    type: "education" as BLOCK_TYPE,
-    content: {
-      schoolName: "",
-      startDate: "2023-01-01",
-      endDate: "2023-01-01",
-      degree: "",
-      state: "",
-      country: "",
-    },
-  };
-};
-
 const ResumeContainer = () => {
   return (
     <ResumeBuilderProvider>
       <ResumeV2 />
     </ResumeBuilderProvider>
-  );
-};
-
-const Header = ({
-  headerBlock,
-  selectBlock,
-}: {
-  headerBlock: any;
-  selectBlock: any;
-}) => {
-  return (
-    <HeaderWrapper
-      className="block"
-      onClick={() => selectBlock(headerBlock.id)}
-    >
-      <h1>{getValueFromBlock(headerBlock, "name")}</h1>
-      <Divider />
-      <div className="header-info">
-        <h4 className="header-info__item">
-          {getValueFromBlock(headerBlock, "name")}
-        </h4>
-        <h4 className="header-info__item">
-          {getValueFromBlock(headerBlock, "phone")}
-        </h4>
-        <h4 className="header-info__item">
-          {getValueFromBlock(headerBlock, "email")}
-        </h4>
-        <h4 className="header-info__item">
-          {getValueFromBlock(headerBlock, "location")}
-        </h4>
-      </div>
-    </HeaderWrapper>
-  );
-};
-
-const SidePanel = ({
-  sidePanelBlock,
-  selectBlock,
-}: {
-  sidePanelBlock: any;
-  selectBlock: any;
-}) => {
-  return (
-    <section
-      className="side-panel block"
-      onClick={() => selectBlock(sidePanelBlock?.id)}
-    >
-      {sidePanelBlock?.content?.skills.length > 0 && (
-        <div className="mb-4">
-          <h3 className="block-title">Skills</h3>
-          <div className="divider" />
-          <div className="skills">
-            {sidePanelBlock?.content?.skills.map(
-              (skill: any, index: number) => {
-                return (
-                  <p className="sidebar-item" key={index}>
-                    {skill}
-                  </p>
-                );
-              }
-            )}
-          </div>
-        </div>
-      )}
-
-      {sidePanelBlock?.content?.education.length > 0 && (
-        <>
-          <h3 className="block-title">Education</h3>
-          <div className="divider" />
-          <div className="education">
-            {sidePanelBlock?.content?.education.map(
-              (education: any, index: number) => {
-                return (
-                  <p className="sidebar-item" key={index}>
-                    {education.schoolName}
-                  </p>
-                );
-              }
-            )}
-          </div>
-        </>
-      )}
-    </section>
   );
 };
 
@@ -301,27 +170,22 @@ const ResumeV2 = () => {
                 );
               })}
             </div>
-
-            <div className="add-new-experience">
-              <button
-                className="resume-button medium mr-2"
-                onClick={() => selectBlockCopy(generateBlankExperience())}
+            <FloatingButton
+              onClick={() => selectBlockCopy(generateBlankExperience())}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="44"
+                height="44"
+                viewBox="0 0 44 44"
+                fill="none"
               >
-                Add new experience
-              </button>
-              <button
-                className="resume-button medium mr-2"
-                onClick={() => selectBlockCopy(generateBlankAward())}
-              >
-                Add new award
-              </button>
-              <button
-                className="resume-button medium"
-                onClick={() => selectBlockCopy(generateBlankEducation())}
-              >
-                Add new education
-              </button>
-            </div>
+                <path
+                  d="M33.0003 23.8332H23.8337V32.9998C23.8337 34.0082 23.0087 34.8332 22.0003 34.8332C20.992 34.8332 20.167 34.0082 20.167 32.9998V23.8332H11.0003C9.99199 23.8332 9.16699 23.0082 9.16699 21.9998C9.16699 20.9915 9.99199 20.1665 11.0003 20.1665H20.167V10.9998C20.167 9.9915 20.992 9.1665 22.0003 9.1665C23.0087 9.1665 23.8337 9.9915 23.8337 10.9998V20.1665H33.0003C34.0087 20.1665 34.8337 20.9915 34.8337 21.9998C34.8337 23.0082 34.0087 23.8332 33.0003 23.8332Z"
+                  fill="white"
+                />
+              </svg>
+            </FloatingButton>
           </div>
           <SidePanel
             sidePanelBlock={sidePanelBlock}
@@ -332,6 +196,104 @@ const ResumeV2 = () => {
     </Layout>
   );
 };
+
+const Header = ({
+  headerBlock,
+  selectBlock,
+}: {
+  headerBlock: any;
+  selectBlock: any;
+}) => {
+  return (
+    <HeaderWrapper
+      className="work-history__item block"
+      onClick={() => selectBlock(headerBlock.id)}
+    >
+      <h1>{getValueFromBlock(headerBlock, "name")}</h1>
+      <Divider />
+      <div
+        className="header-info"
+        style={{
+          textTransform: "uppercase",
+          fontSize: 14,
+        }}
+      >
+        <h4>{getValueFromBlock(headerBlock, "website")}</h4>
+        <h4>{getValueFromBlock(headerBlock, "phone")}</h4>
+        <h4>{getValueFromBlock(headerBlock, "email")}</h4>
+        <h4>{getValueFromBlock(headerBlock, "location")}</h4>
+      </div>
+    </HeaderWrapper>
+  );
+};
+
+const SidePanel = ({
+  sidePanelBlock,
+  selectBlock,
+}: {
+  sidePanelBlock: any;
+  selectBlock: any;
+}) => {
+  return (
+    <section
+      className="side-panel block"
+      onClick={() => selectBlock(sidePanelBlock?.id)}
+    >
+      {sidePanelBlock?.content?.skills.length > 0 && (
+        <div className="mb-4">
+          <h3 className="block-title">Skills</h3>
+          <div className="divider" />
+          <div className="skills">
+            {sidePanelBlock?.content?.skills.map(
+              (skill: any, index: number) => {
+                return (
+                  <p className="sidebar-item" key={index}>
+                    {skill}
+                  </p>
+                );
+              }
+            )}
+          </div>
+        </div>
+      )}
+
+      {sidePanelBlock?.content?.education.length > 0 && (
+        <>
+          <h3 className="block-title">Education</h3>
+          <div className="divider" />
+          <div className="education">
+            {sidePanelBlock?.content?.education.map(
+              (education: any, index: number) => {
+                return (
+                  <p className="sidebar-item" key={index}>
+                    {education.schoolName}
+                  </p>
+                );
+              }
+            )}
+          </div>
+        </>
+      )}
+    </section>
+  );
+};
+
+const FloatingButton = styled("button", {
+  all: "unset",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  position: "fixed",
+  width: 75,
+  height: 75,
+  bottom: 90,
+  right: 100,
+  backgroundColor: "$accent",
+  color: "white",
+  borderRadius: "$round",
+  cursor: "pointer",
+  // padding: 15,
+});
 
 const Toolbar = styled("section", {
   display: "flex",
@@ -347,10 +309,8 @@ const Toolbar = styled("section", {
   },
 });
 
-const Divider = styled("div", {
+const Divider = styled("hr", {
   width: "100%",
-  height: "0.5px",
-  backgroundColor: "$gray",
 
   variants: {
     short: {
@@ -381,10 +341,7 @@ const HeaderWrapper = styled("section", {
   flexDirection: "column",
   gap: 16,
 
-  "& h1": {
-    fontSize: "40px",
-    fontWeight: "600",
-  },
+  "& h1": {},
 
   "& .header-info": {
     display: "flex",
@@ -392,7 +349,6 @@ const HeaderWrapper = styled("section", {
 
     "&__item": {
       fontSize: "12px",
-      fontWeight: "600",
       /* text-transform: uppercase; */
     },
   },
@@ -419,8 +375,8 @@ const Layout = styled("main", {
     transition: "all 0.2s",
 
     "&:hover": {
-      outline: `1.5px solid ${grass.grass8}`,
-      outlineOffset: "2rem",
+      outline: `1.5px solid $accent`,
+      outlineOffset: "0.3rem",
       cursor: "pointer",
     },
   },
@@ -455,9 +411,7 @@ const Layout = styled("main", {
 
           ".roles": {
             ".role": {
-              "&__title": {
-                fontWeight: "600",
-              },
+              "&__title": {},
 
               "&__tenure": {
                 marginTop: "5px",
@@ -472,7 +426,7 @@ const Layout = styled("main", {
           marginBottom: "10px",
           display: "flex",
           width: "80%",
-          fontFamily: "CabinetGrotesk",
+          // fontFamily: "CabinetGrotesk",
         },
 
         ".highlights": {

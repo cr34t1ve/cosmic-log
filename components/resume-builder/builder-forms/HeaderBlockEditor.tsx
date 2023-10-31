@@ -1,7 +1,6 @@
 import { useResumeBuilder } from "@/store/ResumeBuilderContext";
-import { TextInput } from "@/components/forms";
-import styled from "styled-components";
-import { sand } from "@radix-ui/colors";
+import { Button, InputWrapper, TextInput } from "@/components/forms";
+import { styled } from "@/stitches.config";
 import { useState } from "react";
 
 function transformLabel(label: string) {
@@ -35,48 +34,36 @@ export const HeaderBlockEditor = () => {
 
   return (
     <HeaderBlockEditorLayout>
-      <h4>Header</h4>
-
       <div className="form-control">
-        {fieldNames.map((field: string) => {
+        {fieldNames.map((field: string, index: number) => {
           const formField = formValues[field];
 
           return (
-            <TextInput
-              name={field}
-              key={field}
-              value={formField.formValue}
-              label={transformLabel(field)}
-              onChange={onChange}
-            />
+            <FieldWrapper key={index}>
+              <TextInput
+                name={field}
+                key={field}
+                value={formField.formValue}
+                label={transformLabel(field)}
+                onChange={onChange}
+              />
+            </FieldWrapper>
           );
         })}
       </div>
-      <button className="resume-button medium" onClick={saveChange}>
+      <Button css={{ marginTop: 30 }} onClick={saveChange}>
         Save
-      </button>
+      </Button>
     </HeaderBlockEditorLayout>
   );
 };
 
-const HeaderBlockEditorLayout = styled.div`
-  h4 {
-    color: ${sand.sand12};
-    margin-top: 0;
-  }
+const HeaderBlockEditorLayout = styled("div", {});
 
-  .form-control {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+const FieldWrapper = styled(InputWrapper, {
+  marginTop: 30,
 
-    .textinput-container {
-      margin-bottom: 20px;
-    }
-  }
-
-  button {
-    width: 100%;
-  }
-`;
+  "&:first-of-type": {
+    marginTop: 0,
+  },
+});

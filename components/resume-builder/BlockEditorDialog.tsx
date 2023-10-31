@@ -1,6 +1,4 @@
 import { FC } from "react";
-import { Dialog } from "@headlessui/react";
-import { sand } from "@radix-ui/colors";
 import styled from "styled-components";
 
 import { HeaderBlockEditor } from "./builder-forms/HeaderBlockEditor";
@@ -10,6 +8,29 @@ import { BLOCK_TYPE, useResumeBuilder } from "@/store/ResumeBuilderContext";
 import { AwardHistoryEditor } from "./builder-forms/AwardHistoryEditor";
 import { EducationHistoryEditor } from "./builder-forms/EducationHistoryBlock";
 import { SidePanelEditor } from "./builder-forms/SidePanelEditor";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogRoot,
+  DialogTitle,
+  DropdownContent,
+  DropdownItem,
+  DropdownPortal,
+  DropdownRoot,
+  DropdownTrigger,
+  Flex,
+} from "..";
+import { BLOCK_TYPES } from "@/lib/data";
+import {
+  generateBlankAward,
+  generateBlankEducation,
+  generateBlankExperience,
+  generateBlankHeader,
+  generateBlankSidePanel,
+  transformLabel,
+} from "@/lib/helpers";
 
 // TODO: Should be: Record<BLOCK_TYPE, React.FC>
 
@@ -21,6 +42,14 @@ const editors: Record<BLOCK_TYPE, any> = {
   "side-panel": SidePanelEditor,
 };
 
+const blankBlock: Record<BLOCK_TYPE, any> = {
+  header: generateBlankHeader(),
+  "work-experience": generateBlankExperience(),
+  award: generateBlankAward(),
+  education: generateBlankEducation(),
+  "side-panel": generateBlankSidePanel(),
+};
+
 interface BlockEditorDialogProps {
   show: boolean;
   closeModal: () => void;
@@ -30,63 +59,104 @@ export const BlockEditorDialog: FC<BlockEditorDialogProps> = ({
   show,
   closeModal = () => {},
 }) => {
-  const { selectedBlock } = useResumeBuilder();
+  const { blocks, selectedBlock, selectBlockCopy, selectBlock } =
+    useResumeBuilder();
+  const Block = editors[selectedBlock?.type as BLOCK_TYPE];
+
+  const headerBlock = blocks.filter((block) => block.type === "header")?.[0];
+  const sidePanelBlock = blocks.filter(
+    (block) => block.type === "side-panel"
+  )?.[0];
+
+  function handleBlockTypeChange(blockType: BLOCK_TYPE) {
+    console.log("headerBlock", headerBlock);
+    switch (blockType) {
+      case "header":
+        selectBlock(headerBlock?.id!);
+        return;
+      case "side-panel":
+        selectBlock(sidePanelBlock?.id!);
+        return;
+      default:
+        selectBlockCopy(blankBlock[blockType]);
+    }
+  }
 
   return (
     <BlockEditorDialogContainer>
-      <Dialog onClose={closeModal} open={show}>
-        <div
-          style={{
-            position: "fixed",
-            top: "0",
-            right: "0",
-            bottom: "0",
-            left: "0",
-            backgroundColor: "rgba( #bfc2ca, 0.01)",
-            backdropFilter: "blur(0.5px)",
-          }}
-        />
-        <div
-          style={{
-            overflowY: "auto",
-            position: "fixed",
-            top: "0",
-            right: "0",
-            bottom: "0",
-            left: "0",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              padding: "1rem",
-              textAlign: "center",
-              justifyContent: "center",
-              alignItems: "center",
-              minHeight: "100%",
-            }}
-          >
-            <Dialog.Panel
-              style={{
-                overflow: "hidden",
-                padding: "1.5rem",
-                backgroundColor: "#ffffff",
-                transitionProperty: "all",
-                textAlign: "left",
-                verticalAlign: "middle",
-                width: "100%",
-                maxWidth: selectedBlock?.type === "header" ? "28rem" : "40rem",
-                border: `1px solid ${sand.sand5}`,
-                borderRadius: "1rem",
-                filter:
-                  " drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06))",
-              }}
-            >
-              {editors?.[selectedBlock?.type as BLOCK_TYPE]}
-            </Dialog.Panel>
-          </div>
-        </div>
-      </Dialog>
+      <DialogRoot
+        onOpenChange={(open) => {
+          if (!open) {
+            closeModal();
+          }
+        }}
+        open={show}
+      >
+        <DialogOverlay />
+        <DialogPortal>
+          <DialogContent>
+            <>
+              <Flex
+                direction="column"
+                css={{
+                  padding: "25px 50px 45px",
+                }}
+              >
+                <DialogTitle>Add Section</DialogTitle>
+                <DialogDescription>
+                  Add the details of where you have previously recived a working
+                  experience or internship
+                </DialogDescription>
+                <DropdownRoot>
+                  <DropdownTrigger css={{ marginTop: 20 }}>
+                    {(
+                      <span style={{ textTransform: "capitalize" }}>
+                        {selectedBlock?.type?.split("-").join(" ")}
+                      </span>
+                    ) || "Select a section"}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M19 9L12 15L5 9"
+                        stroke="black"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </DropdownTrigger>
+                  <DropdownPortal>
+                    <DropdownContent sideOffset={5}>
+                      {BLOCK_TYPES.map((type) => (
+                        <DropdownItem
+                          key={type}
+                          onClick={() => handleBlockTypeChange(type)}
+                        >
+                          {transformLabel(type)}
+                        </DropdownItem>
+                      ))}
+                    </DropdownContent>
+                  </DropdownPortal>
+                </DropdownRoot>
+              </Flex>
+              <Flex
+                direction="column"
+                css={{
+                  padding: "25px 50px 45px",
+                  backgroundColor: "$ash",
+                }}
+              >
+                {selectedBlock?.type && <Block />}
+              </Flex>
+            </>
+          </DialogContent>
+        </DialogPortal>
+      </DialogRoot>
     </BlockEditorDialogContainer>
   );
 };

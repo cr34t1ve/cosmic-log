@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { sand, grass } from "@radix-ui/colors";
 import { useResumeBuilder } from "@/store/ResumeBuilderContext";
-import { TextInput } from "@/components/forms";
+import { Button, InputWrapper, TextInput } from "@/components/forms";
 import { transformLabel } from "@/lib/helpers";
+import { styled } from "@/stitches.config";
 
 const defaultRole = {
   title: "",
@@ -37,138 +36,49 @@ export const AwardHistoryEditor = () => {
 
   return (
     <AwardHistoryEditorContainer>
-      <h4>Award</h4>
       {fieldNames.map((field: string, index: number) => {
         const formField = formValues[field];
 
         return (
           <>
             {field.includes("date") ? (
-              <TextInput
-                label={transformLabel(field)}
-                type="date"
-                name={field}
-                value={formField}
-                onChange={onChange}
-              />
+              <FieldWrapper>
+                <TextInput
+                  label={transformLabel(field)}
+                  type="date"
+                  name={field}
+                  value={formField}
+                  onChange={onChange}
+                />
+              </FieldWrapper>
             ) : (
-              <TextInput
-                name={field}
-                key={index}
-                value={formField}
-                label={transformLabel(field)}
-                onChange={onChange}
-              />
+              <FieldWrapper>
+                <TextInput
+                  name={field}
+                  key={index}
+                  value={formField}
+                  label={transformLabel(field)}
+                  onChange={onChange}
+                />
+              </FieldWrapper>
             )}
           </>
         );
       })}
 
-      <button className="resume-button medium" onClick={saveBlock}>
+      <Button css={{ marginTop: 50 }} onClick={saveBlock}>
         Save
-      </button>
+      </Button>
     </AwardHistoryEditorContainer>
   );
 };
 
-const AwardHistoryEditorContainer = styled.div`
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+const AwardHistoryEditorContainer = styled("div", {});
 
-  h4 {
-    color: ${sand.sand12};
-    margin-top: 0;
-  }
+const FieldWrapper = styled(InputWrapper, {
+  marginTop: 30,
 
-  .header {
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    &:hover {
-      svg {
-        path {
-          fill: ${grass.grass8};
-        }
-      }
-    }
-
-    p {
-      font-size: 15px;
-      color: ${sand.sand12};
-      display: flex;
-
-      span {
-        color: ${grass.grass11};
-        padding: 0 2px;
-      }
-    }
-  }
-
-  .roles {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    .role {
-      gap: 10px;
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      align-items: flex-end;
-
-      .title {
-        grid-column: span 4;
-      }
-
-      .tenure {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        grid-column: span 5;
-
-        .textinput-container {
-          width: 150px;
-        }
-      }
-
-      .delete {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        grid-template-columns: span 1;
-        cursor: pointer;
-        margin-bottom: 5px;
-
-        &:hover {
-          svg {
-            path {
-              fill: ${grass.grass8};
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .highlights {
-    margin-top: 20px;
-    .highlight {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      gap: 10px;
-    }
-  }
-
-  button {
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  * {
-    /* outline: 1px dotted red; */
-  }
-`;
+  "&:first-of-type": {
+    marginTop: 0,
+  },
+});
