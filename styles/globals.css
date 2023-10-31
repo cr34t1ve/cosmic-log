@@ -163,7 +163,8 @@ a {
     grid-column: span 5 !important;
   }
 
-  .toolbar {
+  .toolbar,
+  .floating-button {
     display: none !important;
   }
 
