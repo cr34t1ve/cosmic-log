@@ -7,8 +7,8 @@ import { Flex } from "@/components";
 
 const defaultRole = {
   title: "",
-  startDate: "",
-  endDate: "",
+  startDate: "2023-01-01",
+  endDate: "2023-01-01",
 };
 
 export function WorkExperienceEditor() {
