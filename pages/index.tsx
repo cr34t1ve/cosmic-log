@@ -8,9 +8,10 @@ import {
   ResumeBuilderProvider,
   useResumeBuilder,
 } from "@/store/ResumeBuilderContext";
-import { BlockEditorDialog } from "../components";
+import { BlockEditorDialog, Button } from "../components";
 import Head from "next/head";
 import { generateBlankExperience } from "@/lib/helpers";
+import Image from "next/image";
 
 function getValueFromBlock(block: any, name: any) {
   return block?.content[name]?.formValue || "";
@@ -68,7 +69,7 @@ const ResumeV2 = () => {
   return (
     <Layout className="layout" ref={containerRef}>
       <Head>
-        <title>Resume on steriods</title>
+        <title>CV Mason</title>
       </Head>
       <BlockEditorDialog
         show={Boolean(selectedBlock)}
@@ -76,13 +77,22 @@ const ResumeV2 = () => {
       />
 
       <Toolbar className="toolbar">
-        <div className="logo">ResumeBuilder</div>
-        <button className="resume-button" onClick={saveConfiguration}>
+        <div className="logo">
+          <Image
+            src="/cvmason.svg"
+            alt="CV Mason Logo"
+            width={128}
+            height={28}
+            priority
+            draggable={false}
+          />
+        </div>
+        <Button variant="outline" onClick={saveConfiguration}>
           Save Configuration
-        </button>
-        <button className="resume-button" onClick={saveToPDF}>
+        </Button>
+        <Button variant="outline" onClick={saveToPDF}>
           Save PDF
-        </button>
+        </Button>
       </Toolbar>
 
       <ContentWrapper className="content-wrapper">
@@ -101,7 +111,7 @@ const ResumeV2 = () => {
                       borderBottom: `1px solid ${
                         index === workExperienceBlocks.length - 1
                           ? "transparent"
-                          : sand.sand5
+                          : "#eaeaea"
                       }`,
                     }}
                     key={block.id}
@@ -211,7 +221,7 @@ const Header = ({
       onClick={() => selectBlock(headerBlock.id)}
     >
       <h1>{getValueFromBlock(headerBlock, "name")}</h1>
-      <Divider />
+      <Divider css={{ marginBlock: 30 }} />
       <div
         className="header-info"
         style={{
@@ -241,8 +251,8 @@ const SidePanel = ({
       onClick={() => selectBlock(sidePanelBlock?.id)}
     >
       {sidePanelBlock?.content?.skills.length > 0 && (
-        <div className="mb-4">
-          <h3 className="block-title">Skills</h3>
+        <div>
+          {/* <h3 className="block-title">Skills</h3> */}
           <div className="divider" />
           <div className="skills">
             {sidePanelBlock?.content?.skills.map(
@@ -258,9 +268,13 @@ const SidePanel = ({
         </div>
       )}
 
+      {sidePanelBlock?.content?.education?.length > 0 && (
+        <Divider css={{ marginBlock: 17 }} />
+      )}
+
       {sidePanelBlock?.content?.education.length > 0 && (
         <>
-          <h3 className="block-title">Education</h3>
+          {/* <h3 className="block-title">Education</h3>  */}
           <div className="divider" />
           <div className="education">
             {sidePanelBlock?.content?.education.map(
@@ -298,8 +312,9 @@ const FloatingButton = styled("button", {
 
 const Toolbar = styled("section", {
   display: "flex",
-  padding: "20px 15rem",
-  borderBottom: "1px solid $sand5",
+  alignItems: "center",
+  padding: "20px 8rem",
+  marginBottom: 30,
 
   "& .logo": {
     marginRight: "auto",
@@ -319,11 +334,7 @@ const Divider = styled("hr", {
         width: "10%",
       },
     },
-    color: {
-      sand: {
-        backgroundColor: "$sand5",
-      },
-    },
+    color: {},
     margin: {
       8: {
         marginTop: 8,
@@ -340,7 +351,6 @@ const Divider = styled("hr", {
 const HeaderWrapper = styled("section", {
   display: "flex",
   flexDirection: "column",
-  gap: 16,
 
   "& h1": {},
 
@@ -394,6 +404,7 @@ const Layout = styled("main", {
 
       "&__item": {
         paddingTop: "30px",
+        paddingBottom: "30px",
         display: "grid",
         gap: "20px",
         gridTemplateColumns: "repeat(4, 1fr)",

@@ -24,6 +24,16 @@ export const Button = styled("button", {
         borderRadius: 17,
         padding: "8px 16px",
       },
+      outline: {
+        width: "max-content",
+        backgroundColor: "transparent",
+        border: "1px solid $divider",
+        color: "$primaryText",
+        fontSize: "$2",
+        fontWeight: "$regular",
+        borderRadius: 100,
+        padding: "12px 18px",
+      },
     },
   },
 });
